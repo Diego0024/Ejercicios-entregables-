@@ -1,0 +1,26 @@
+package com.generation;
+
+import java.util.Scanner;
+
+public class PalabraAlReves {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Solicitar al usuario una palabra o frase
+        System.out.print("Ingrese una palabra o frase: ");
+        String texto = scanner.nextLine();
+
+        // Mostrar el texto al revés
+        String textoAlReves = invertirTexto(texto);
+        System.out.println("Texto al revés: " + textoAlReves);
+    }
+
+    // Método para invertir el texto
+    public static String invertirTexto(String texto) {
+        StringBuilder textoInvertido = new StringBuilder();
+        for (int i = texto.length() - 1; i >= 0; i--) {
+            textoInvertido.append(texto.charAt(i));
+        }
+        return textoInvertido.toString();
+    }
+}

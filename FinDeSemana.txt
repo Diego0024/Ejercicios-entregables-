@@ -1,0 +1,91 @@
+package com.generation;
+
+import java.util.Scanner;
+
+public class FinDeSemana {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] diasSemana = {"lunes", "martes", "miércoles", "jueves", "viernes"};
+
+        // Solicitar al usuario el día de la semana
+        String diaSemana;
+        do {
+            System.out.print("Ingrese un día de la semana (lunes a viernes): ");
+            diaSemana = scanner.nextLine().toLowerCase();
+        } while (!validarDiaSemana(diaSemana, diasSemana));
+
+        // Solicitar al usuario la hora
+        int hora;
+        do {
+            System.out.print("Ingrese la hora (0 a 23): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Debe ingresar un número entero para la hora.");
+                System.out.print("Ingrese la hora (0 a 23): ");
+                scanner.next();
+            }
+            hora = scanner.nextInt();
+        } while (hora < 0 || hora > 23);
+
+        // Solicitar al usuario los minutos
+        int minutos;
+        do {
+            System.out.print("Ingrese los minutos (0 a 59): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Debe ingresar un número entero para los minutos.");
+                System.out.print("Ingrese los minutos (0 a 59): ");
+                scanner.next();
+            }
+            minutos = scanner.nextInt();
+        } while (minutos < 0 || minutos > 59);
+
+        // Calcular minutos faltantes para el fin de semana
+        int minutosFaltantes = calcularMinutosFaltantes(diaSemana, hora, minutos);
+        System.out.println("Faltan " + minutosFaltantes + " minutos para el fin de semana.");
+    }
+
+    // Método para validar si el día de la semana ingresado es válido
+    public static boolean validarDiaSemana(String dia, String[] diasSemana) {
+        for (String diaSemana : diasSemana) {
+            if (dia.equals(diaSemana)) {
+                return true;
+            }
+        }
+        System.out.println("Debe ingresar un día de la semana válido (lunes a viernes).");
+        return false;
+    }
+
+    // Método para calcular los minutos faltantes para el fin de semana
+    public static int calcularMinutosFaltantes(String dia, int hora, int minutos) {
+        int minutosTotales = 0;
+
+        // Calcular minutos restantes del día actual
+        minutosTotales += (23 - hora) * 60 + (59 - minutos);
+
+        // Calcular minutos de los días siguientes hasta el viernes
+        if (!dia.equals("viernes")) {
+            minutosTotales += (5 - obtenerIndiceDiaSemana(dia)) * 24 * 60;
+        }
+
+        // Ajustar minutos para el viernes después de las 15:00 hrs
+        if (dia.equals("viernes")) {
+            if (hora < 15) {
+                minutosTotales += (15 - hora) * 60 - minutos;
+            } else {
+                minutosTotales -= (hora - 15) * 60 + minutos;
+            }
+        }
+
+        return minutosTotales;
+    }
+
+    // Método para obtener el índice de un día de la semana en el arreglo
+    public static int obtenerIndiceDiaSemana(String dia) {
+        String[] diasSemana = {"lunes", "martes", "miércoles", "jueves", "viernes"};
+        for (int i = 0; i < diasSemana.length; i++) {
+            if (dia.equals(diasSemana[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}

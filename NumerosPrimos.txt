@@ -1,0 +1,66 @@
+package com.generation;
+import java.util.Scanner;
+
+public class NumerosPrimosAlInicio {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] numeros = new int[10];
+
+        // Solicitar al usuario 10 números y almacenarlos en un array
+        for (int i = 0; i < 10; i++) {
+            System.out.print("Ingrese el número " + (i + 1) + ": ");
+            numeros[i] = scanner.nextInt();
+        }
+
+        // Mostrar el array original
+        System.out.println("Array original mostrando la posición del array más el valor:");
+        mostrarArrayConIndices(numeros);
+
+        // Mover los números primos al principio del array
+        moverPrimosAlInicio(numeros);
+
+        // Mostrar el array con los números primos al principio
+        System.out.println("Array con los números primos en las primeras posiciones, mostrando la posición del array más el valor:");
+        mostrarArrayConIndices(numeros);
+    }
+
+    // Método para determinar si un número es primo
+    public static boolean esPrimo(int numero) {
+        if (numero <= 1) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(numero); i++) {
+            if (numero % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Método para mover los números primos al principio del array
+    public static void moverPrimosAlInicio(int[] numeros) {
+        int indicePrimos = 0;
+        int indiceNoPrimos = 0;
+        int[] resultado = new int[numeros.length];
+
+        for (int numero : numeros) {
+            if (esPrimo(numero)) {
+                resultado[indicePrimos++] = numero;
+            } else {
+                resultado[numeros.length - (numeros.length - indicePrimos) + indiceNoPrimos++] = numero;
+            }
+        }
+
+        // Copiar el resultado de nuevo al array original
+        System.arraycopy(resultado, 0, numeros, 0, numeros.length);
+    }
+
+    // Método para mostrar el array con sus índices
+    public static void mostrarArrayConIndices(int[] array) {
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(i + " - " + array[i]);
+        }
+    }
+}
+
+
